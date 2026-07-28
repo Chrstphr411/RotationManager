@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rotation Manager</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:#1b1e24;
+    color:#fff;
+    font-family:Segoe UI,Tahoma,sans-serif;
+}
+
+.container{
+    max-width:700px;
+    margin:30px auto;
+    padding:20px;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+    color:#58a6ff;
+}
+
+.controls{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+input{
+    flex:1;
+    padding:10px;
+    font-size:16px;
+    border:none;
+    border-radius:6px;
+    background:#2a2f38;
+    color:white;
+}
+
+button{
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    padding:10px 14px;
+    font-weight:bold;
+}
+
+.addBtn{
+    background:#238636;
+    color:white;
+}
+
+.copyBtn{
+    background:#0d6efd;
+    color:white;
+    width:100%;
+    margin-bottom:20px;
+}
+
+.list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.member{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px;
+    border-radius:8px;
+    cursor:grab;
+}
+
+.member.green{
+    background:#238636;
+}
+
+.member.yellow{
+    background:#d29922;
+    color:black;
+}
+
+.member.red{
+    background:#b62324;
+}
+
+.name{
+    font-weight:bold;
+}
+
+.actions{
+    display:flex;
+    gap:6px;
+}
+
+.rotate{
+    background:#0d6efd;
+    color:white;
+}
+
+.delete{
+    background:#444;
+    color:white;
+}
+
+.member.dragging{
+    opacity:.5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Rotation Manager</h1>
+
+<div class="controls">
+<input id="nameInput" placeholder="Add member">
+<button class="addBtn" onclick="addMember()">Add</button>
+</div>
+
+<button class="copyBtn" onclick="copyChat()">📋 Copy Names</button>
+
+<div id="list" class="list"></div>
+
+</div>
+
+<script>
+
+let people = JSON.parse(localStorage.getItem("rotationList")) || [];
+
+let dragStartIndex = null;
+
+function save(){
+    localStorage.setItem("rotationList",JSON.stringify(people));
+}
+
+function render(){
+
+    save();
+
+    const list=document.getElementById("list");
+    list.innerHTML="";
+
+    people.forEach((person,index)=>{
+
+        const div=document.createElement("div");
+
+        div.classList.add("member");
+
+        if(index===0)
+            div.classList.add("green");
+        else if(index<3)
+            div.classList.add("yellow");
+        else
+            div.classList.add("red");
+
+        div.draggable=true;
+        div.dataset.index=index;
+
+        div.innerHTML=`
+            <div class="name">${index+1}. ${person}</div>
+
+            <div class="actions">
+                <button class="rotate">Rotate</button>
+                <button class="delete">✕</button>
+            </div>
+        `;
+
+        div.querySelector(".rotate").onclick=()=>rotate(index);
+        div.querySelector(".delete").onclick=()=>remove(index);
+
+        div.addEventListener("dragstart",dragStart);
+        div.addEventListener("dragover",dragOver);
+        div.addEventListener("drop",drop);
+        div.addEventListener("dragend",()=>div.classList.remove("dragging"));
+
+        list.appendChild(div);
+
+    });
+
+}
+
+function dragStart(e){
+
+    dragStartIndex=Number(this.dataset.index);
+
+    this.classList.add("dragging");
+
+}
+
+function dragOver(e){
+
+    e.preventDefault();
+
+}
+
+function drop(e){
+
+    e.preventDefault();
+
+    const dropIndex=Number(this.dataset.index);
+
+    if(dragStartIndex===dropIndex) return;
+
+    const moved=people.splice(dragStartIndex,1)[0];
+
+    people.splice(dropIndex,0,moved);
+
+    render();
+
+}
+
+function addMember(){
+
+    const input=document.getElementById("nameInput");
+
+    const name=input.value.trim();
+
+    if(name==="") return;
+
+    people.push(name);
+
+    input.value="";
+
+    render();
+
+}
+
+function rotate(index){
+
+    const person=people.splice(index,1)[0];
+
+    people.push(person);
+
+    render();
+
+}
+
+function remove(index){
+
+    people.splice(index,1);
+
+    render();
+
+}
+
+async function copyChat() {
+
+    if (people.length === 0) return;
+
+    let text = "🔄 Rotation\n\n";
+
+    people.forEach((name, index) => {
+
+        let icon = "🔴";
+
+        if (index === 0)
+            icon = "🟢";
+        else if (index < 3)
+            icon = "🟡";
+
+        text += `${icon} ${name}\n`;
+
+    });
+
+    try {
+
+        await navigator.clipboard.writeText(text);
+
+        const btn = document.querySelector(".copyBtn");
+        const original = btn.innerText;
+
+        btn.innerText = "✅ Copied!";
+
+        setTimeout(() => {
+            btn.innerText = original;
+        }, 1500);
+
+    } catch {
+
+        prompt("Copy the list:", text);
+
+    }
+
+}
+
+document.getElementById("nameInput").addEventListener("keydown",function(e){
+
+    if(e.key==="Enter")
+        addMember();
+
+});
+
+render();
+
+</script>
+
+</body>
+</html>
