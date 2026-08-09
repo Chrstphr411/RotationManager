@@ -64,6 +64,28 @@ h1 {
     justify-content: center;
 }
 
+.jump-controls {
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    margin-bottom:10px;
+}
+
+.jump-controls input {
+    max-width:180px;
+    text-align:center;
+}
+
+.jumpBtn {
+    background:#8957e5;
+    color:white;
+}
+
+.removeCount {
+    background:#d29922;
+    color:black;
+}
+
 .counter-buttons button {
     flex: 1;
     max-width: 180px;
@@ -297,7 +319,7 @@ button:hover {
 
 <div class="container">
 
-<h1>🔄 CHRSTPHR's Torn War Chain Counter 3.0</h1>
+<h1>🔄 Torn War Chain Counter</h1>
 
 
 <!-- CURRENT CHAIN COUNTER -->
@@ -312,21 +334,44 @@ button:hover {
         0
     </div>
 
-    <div class="counter-buttons">
+<div class="jump-controls">
 
-        <button
-            class="addCount"
-            onclick="addCount()">
-            +1
-        </button>
+    <input
+        id="jumpInput"
+        type="number"
+        min="0"
+        placeholder="Chain #"
+    >
 
-        <button
-            class="resetCount"
-            onclick="resetCount()">
-            Reset Counter
-        </button>
+    <button
+        class="jumpBtn"
+        onclick="jumpToChain()">
+        Jump To
+    </button>
 
-    </div>
+</div>
+
+<div class="counter-buttons">
+
+    <button
+        class="addCount"
+        onclick="addCount()">
+        ➕ Add 1
+    </button>
+
+    <button
+        class="removeCount"
+        onclick="removeCount()">
+        ➖ Remove 1
+    </button>
+
+    <button
+        class="resetCount"
+        onclick="resetCount()">
+        Reset
+    </button>
+
+</div>
 
 </div>
 
@@ -537,7 +582,7 @@ function render() {
             <div class="actions">
 
                 <button class="rotate">
-                    Rotate
+                    HIT
                 </button>
 
                 <button class="delete">
@@ -762,6 +807,39 @@ function addCount() {
 
 }
 
+function removeCount() {
+
+    if (chainCount > 0) {
+        chainCount--;
+    }
+
+    render();
+}
+
+
+function jumpToChain() {
+
+    const input =
+        document.getElementById("jumpInput");
+
+    const newCount =
+        Number(input.value);
+
+    if (
+        input.value === "" ||
+        !Number.isInteger(newCount) ||
+        newCount < 0
+    ) {
+        return;
+    }
+
+    chainCount = newCount;
+
+    input.value = "";
+
+    render();
+}
+
 
 /* ==========================================
    RESET COUNTER
@@ -866,7 +944,7 @@ async function copyChat() {
 
 
     let text =
-        "🔄 Current Rotation\n\n";
+        "🔄 Torn War Rotation\n\n";
 
 
     people.forEach(
@@ -892,7 +970,7 @@ async function copyChat() {
 
 
             text +=
-                `${icon} ${name} → #${expectedChain}\n`;
+                `${icon} ${name} → Chain #${expectedChain}\n`;
 
         }
     );
