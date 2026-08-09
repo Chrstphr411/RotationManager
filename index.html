@@ -3,118 +3,293 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CHRSTPHR's Torn Rotation Manager</title>
+
+<title>Chrstphr's Torn War Chain Counter</title>
 
 <style>
-*{
-    box-sizing:border-box;
+
+* {
+    box-sizing: border-box;
 }
 
-body{
-    margin:0;
-    background:#1b1e24;
-    color:#fff;
-    font-family:Segoe UI,Tahoma,sans-serif;
+body {
+    margin: 0;
+    background: #1b1e24;
+    color: #fff;
+    font-family: Segoe UI, Tahoma, sans-serif;
 }
 
-.container{
-    max-width:700px;
-    margin:30px auto;
-    padding:20px;
+.container {
+    max-width: 700px;
+    margin: 25px auto;
+    padding: 15px;
 }
 
-h1{
-    text-align:center;
-    margin-bottom:20px;
-    color:#58a6ff;
+/* HEADER */
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #58a6ff;
 }
 
-.controls{
-    display:flex;
-    gap:10px;
-    margin-bottom:20px;
+/* COUNTER */
+
+.counter {
+    background: #252a33;
+    border: 1px solid #3b4350;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
-input{
-    flex:1;
-    padding:10px;
-    font-size:16px;
-    border:none;
-    border-radius:6px;
-    background:#2a2f38;
-    color:white;
+.counter-title {
+    color: #9da7b3;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-button{
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-    padding:10px 14px;
-    font-weight:bold;
+.counter-number {
+    font-size: 48px;
+    font-weight: bold;
+    color: #58a6ff;
+    margin: 5px 0 12px;
 }
 
-.addBtn{
-    background:#238636;
-    color:white;
+.counter-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
 }
 
-.copyBtn{
-    background:#0d6efd;
-    color:white;
-    width:100%;
-    margin-bottom:20px;
+.counter-buttons button {
+    flex: 1;
+    max-width: 180px;
 }
 
-.list{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
+/* INPUT */
+
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
-.member{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:12px;
-    border-radius:8px;
-    cursor:grab;
+input {
+    flex: 1;
+    padding: 11px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    background: #2a2f38;
+    color: white;
+    outline: none;
 }
 
-.member.green{
-    background:#238636;
+input:focus {
+    box-shadow: 0 0 0 2px #58a6ff;
 }
 
-.member.yellow{
-    background:#d29922;
-    color:black;
+/* BUTTONS */
+
+button {
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 10px 14px;
+    font-weight: bold;
 }
 
-.member.red{
-    background:#b62324;
+button:hover {
+    opacity: .85;
 }
 
-.name{
-    font-weight:bold;
+.addBtn {
+    background: #238636;
+    color: white;
 }
 
-.actions{
-    display:flex;
-    gap:6px;
+.copyBtn {
+    background: #0d6efd;
+    color: white;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
-.rotate{
-    background:#0d6efd;
-    color:white;
+.addCount {
+    background: #238636;
+    color: white;
 }
 
-.delete{
-    background:#444;
-    color:white;
+.resetCount {
+    background: #b62324;
+    color: white;
 }
 
-.member.dragging{
-    opacity:.5;
+/* ROTATION LIST */
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
+
+.member {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: grab;
+    user-select: none;
+}
+
+.member:active {
+    cursor: grabbing;
+}
+
+.member.green {
+    background: #238636;
+}
+
+.member.yellow {
+    background: #d29922;
+    color: #000;
+}
+
+.member.red {
+    background: #b62324;
+}
+
+.member.dragging {
+    opacity: .4;
+}
+
+.name {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chainNumber {
+    background: rgba(0,0,0,.25);
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.actions {
+    display: flex;
+    gap: 6px;
+}
+
+.rotate {
+    background: #0d6efd;
+    color: white;
+}
+
+.delete {
+    background: #444;
+    color: white;
+}
+
+/* HISTORY */
+
+.section {
+    margin-top: 30px;
+}
+
+.section h2 {
+    font-size: 18px;
+    color: #58a6ff;
+    border-bottom: 1px solid #3b4350;
+    padding-bottom: 8px;
+}
+
+.history {
+    background: #222831;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.historyItem {
+    padding: 9px 12px;
+    border-bottom: 1px solid #353b45;
+    color: #c9d1d9;
+    font-size: 14px;
+}
+
+.historyItem:last-child {
+    border-bottom: none;
+}
+
+.empty {
+    color: #777;
+    text-align: center;
+    padding: 15px;
+}
+
+/* FOOTER */
+
+.footer {
+    margin: 40px auto 20px;
+    padding: 20px;
+    background: #222831;
+    border-top: 3px solid #58a6ff;
+    border-radius: 8px;
+    color: #c9d1d9;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.footer h3 {
+    margin-top: 0;
+    color: #58a6ff;
+}
+
+.footer p {
+    margin: 10px 0;
+}
+
+.footer strong {
+    color: white;
+}
+
+/* MOBILE */
+
+@media(max-width:600px) {
+
+    .container {
+        margin: 10px auto;
+        padding: 10px;
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+
+    .controls button {
+        width: 100%;
+    }
+
+    .member {
+        padding: 10px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .actions button {
+        padding: 7px 10px;
+    }
+
+}
+
 </style>
 </head>
 
@@ -122,207 +297,765 @@ button{
 
 <div class="container">
 
-<h1>CHRSTPHR's Chain Rotation Manager</h1>
+<h1>🔄 CHRSTPHR's Torn War Chain Counter 3.0</h1>
 
-<div class="controls">
-<input id="nameInput" placeholder="Add member">
-<button class="addBtn" onclick="addMember()">Add</button>
+
+<!-- CURRENT CHAIN COUNTER -->
+
+<div class="counter">
+
+    <div class="counter-title">
+        Current Chain
+    </div>
+
+    <div id="chainCount" class="counter-number">
+        0
+    </div>
+
+    <div class="counter-buttons">
+
+        <button
+            class="addCount"
+            onclick="addCount()">
+            +1
+        </button>
+
+        <button
+            class="resetCount"
+            onclick="resetCount()">
+            Reset Counter
+        </button>
+
+    </div>
+
 </div>
 
-<button class="copyBtn" onclick="copyChat()">📋 Copy Names</button>
+
+<!-- ADD MEMBER -->
+
+<div class="controls">
+
+    <input
+        id="nameInput"
+        placeholder="Add member"
+        autocomplete="off"
+    >
+
+    <button
+        class="addBtn"
+        onclick="addMember()">
+        + Add
+    </button>
+
+</div>
+
+
+<!-- COPY LIST -->
+
+<button
+    class="copyBtn"
+    onclick="copyChat()">
+    📋 Copy Names
+</button>
+
+
+<!-- ROTATION LIST -->
 
 <div id="list" class="list"></div>
 
+
+<!-- ROTATION HISTORY -->
+
+<div class="section">
+
+    <h2>📜 Rotation History</h2>
+
+    <div
+        id="history"
+        class="history">
+    </div>
+
 </div>
 
-<script>
 
-let people = JSON.parse(localStorage.getItem("rotationList")) || [];
+<!-- FOOTER -->
 
-let dragStartIndex = null;
-
-function save(){
-    localStorage.setItem("rotationList",JSON.stringify(people));
-}
-
-function render(){
-
-    save();
-
-    const list=document.getElementById("list");
-    list.innerHTML="";
-
-    people.forEach((person,index)=>{
-
-        const div=document.createElement("div");
-
-        div.classList.add("member");
-
-        if(index===0)
-            div.classList.add("green");
-        else if(index<3)
-            div.classList.add("yellow");
-        else
-            div.classList.add("red");
-
-        div.draggable=true;
-        div.dataset.index=index;
-
-        div.innerHTML=`
-            <div class="name">${index+1}. ${person}</div>
-
-            <div class="actions">
-                <button class="rotate">Rotate</button>
-                <button class="delete">✕</button>
-            </div>
-        `;
-
-        div.querySelector(".rotate").onclick=()=>rotate(index);
-        div.querySelector(".delete").onclick=()=>remove(index);
-
-        div.addEventListener("dragstart",dragStart);
-        div.addEventListener("dragover",dragOver);
-        div.addEventListener("drop",drop);
-        div.addEventListener("dragend",()=>div.classList.remove("dragging"));
-
-        list.appendChild(div);
-
-    });
-
-}
-
-function dragStart(e){
-
-    dragStartIndex=Number(this.dataset.index);
-
-    this.classList.add("dragging");
-
-}
-
-function dragOver(e){
-
-    e.preventDefault();
-
-}
-
-function drop(e){
-
-    e.preventDefault();
-
-    const dropIndex=Number(this.dataset.index);
-
-    if(dragStartIndex===dropIndex) return;
-
-    const moved=people.splice(dragStartIndex,1)[0];
-
-    people.splice(dropIndex,0,moved);
-
-    render();
-
-}
-
-function addMember(){
-
-    const input=document.getElementById("nameInput");
-
-    const name=input.value.trim();
-
-    if(name==="") return;
-
-    people.push(name);
-
-    input.value="";
-
-    render();
-
-}
-
-function rotate(index){
-
-    const person=people.splice(index,1)[0];
-
-    people.push(person);
-
-    render();
-
-}
-
-function remove(index){
-
-    people.splice(index,1);
-
-    render();
-
-}
-
-async function copyChat() {
-
-    if (people.length === 0) return;
-
-    let text = "🔄 Rotation\n\n";
-
-    people.forEach((name, index) => {
-
-        let icon = "🔴";
-
-        if (index === 0)
-            icon = "🟢";
-        else if (index < 3)
-            icon = "🟡";
-
-        text += `${icon} ${name}\n`;
-
-    });
-
-    try {
-
-        await navigator.clipboard.writeText(text);
-
-        const btn = document.querySelector(".copyBtn");
-        const original = btn.innerText;
-
-        btn.innerText = "✅ Copied!";
-
-        setTimeout(() => {
-            btn.innerText = original;
-        }, 1500);
-
-    } catch {
-
-        prompt("Copy the list:", text);
-
-    }
-
-}
-
-document.getElementById("nameInput").addEventListener("keydown",function(e){
-
-    if(e.key==="Enter")
-        addMember();
-
-});
-
-render();
-
-</script>
 <footer class="footer">
+
     <h3>About</h3>
 
     <p>
-        Welcome to <strong>My Torn War Chain Rotation Manager</strong>.
-        Add players that are ready to hit and rotate them as hits are made.
-        Click the <strong>"Copy Names"</strong> button to automatically copy the
-        rotation, making it easy to paste into your faction chat.
+        Welcome to
+        <strong>Chrstphr's Torn War Chain Counter</strong>.
+        Add players that are ready to hit and rotate them as hits
+        are made. Click the <strong>"Copy Names"</strong> button to
+        automatically copy the rotation to make it easy to paste
+        to your faction chat. Hopefully it helps!
     </p>
 
     <p>
-        Hopefully it helps! If you enjoy this tool, send some
-        <strong>Xanax</strong> or <strong>eDVDs</strong> my way!
+        If you enjoy this tool, send some
+        <strong>Xans or eDVDs</strong> my way!
     </p>
 
     <p>
         — <strong>chrstphr [4164650]</strong>
     </p>
+
 </footer>
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   DATA
+========================================== */
+
+let people =
+    JSON.parse(
+        localStorage.getItem("rotationList")
+    ) || [];
+
+
+let history =
+    JSON.parse(
+        localStorage.getItem("rotationHistory")
+    ) || [];
+
+
+let chainCount =
+    Number(
+        localStorage.getItem("chainCount")
+    ) || 0;
+
+
+let dragStartIndex = null;
+
+
+/* ==========================================
+   SAVE DATA
+========================================== */
+
+function save() {
+
+    localStorage.setItem(
+        "rotationList",
+        JSON.stringify(people)
+    );
+
+    localStorage.setItem(
+        "rotationHistory",
+        JSON.stringify(history)
+    );
+
+    localStorage.setItem(
+        "chainCount",
+        chainCount
+    );
+
+}
+
+
+/* ==========================================
+   RENDER EVERYTHING
+========================================== */
+
+function render() {
+
+    save();
+
+    /* CURRENT CHAIN */
+
+    document.getElementById(
+        "chainCount"
+    ).innerText = chainCount;
+
+
+    /* ROTATION LIST */
+
+    const list =
+        document.getElementById("list");
+
+    list.innerHTML = "";
+
+
+    people.forEach((person, index) => {
+
+        const div =
+            document.createElement("div");
+
+
+        div.classList.add("member");
+
+
+        /* PLAYER COLOR */
+
+        if (index === 0) {
+
+            div.classList.add("green");
+
+        }
+        else if (index < 3) {
+
+            div.classList.add("yellow");
+
+        }
+        else {
+
+            div.classList.add("red");
+
+        }
+
+
+        /* EXPECTED CHAIN */
+
+        const expectedChain =
+            chainCount + index + 1;
+
+
+        div.draggable = true;
+
+        div.dataset.index = index;
+
+
+        div.innerHTML = `
+
+            <div class="name">
+
+                <span>
+                    ${index + 1}. ${person}
+                </span>
+
+                <span class="chainNumber">
+                    Chain #${expectedChain}
+                </span>
+
+            </div>
+
+            <div class="actions">
+
+                <button class="rotate">
+                    Rotate
+                </button>
+
+                <button class="delete">
+                    ✕
+                </button>
+
+            </div>
+
+        `;
+
+
+        /* ROTATE BUTTON */
+
+        div.querySelector(".rotate")
+            .onclick = function(e) {
+
+                e.stopPropagation();
+
+                rotate(index);
+
+            };
+
+
+        /* DELETE BUTTON */
+
+        div.querySelector(".delete")
+            .onclick = function(e) {
+
+                e.stopPropagation();
+
+                remove(index);
+
+            };
+
+
+        /* DRAG EVENTS */
+
+        div.addEventListener(
+            "dragstart",
+            dragStart
+        );
+
+
+        div.addEventListener(
+            "dragover",
+            dragOver
+        );
+
+
+        div.addEventListener(
+            "drop",
+            drop
+        );
+
+
+        div.addEventListener(
+            "dragend",
+            function() {
+
+                div.classList.remove(
+                    "dragging"
+                );
+
+            }
+        );
+
+
+        list.appendChild(div);
+
+    });
+
+
+    renderHistory();
+
+}
+
+
+/* ==========================================
+   ADD MEMBER
+========================================== */
+
+function addMember() {
+
+    const input =
+        document.getElementById(
+            "nameInput"
+        );
+
+
+    const name =
+        input.value.trim();
+
+
+    if (name === "") {
+
+        return;
+
+    }
+
+
+    /*
+       Prevent duplicate names.
+    */
+
+    if (
+        people.some(
+            person =>
+                person.toLowerCase() ===
+                name.toLowerCase()
+        )
+    ) {
+
+        alert(
+            "That member is already on the list."
+        );
+
+        return;
+
+    }
+
+
+    people.push(name);
+
+
+    input.value = "";
+
+
+    render();
+
+}
+
+
+/* ==========================================
+   REMOVE MEMBER
+========================================== */
+
+function remove(index) {
+
+    const person =
+        people[index];
+
+
+    if (
+        !confirm(
+            `Remove ${person} from the rotation?`
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    people.splice(index, 1);
+
+
+    render();
+
+}
+
+
+/* ==========================================
+   ROTATE PLAYER
+========================================== */
+
+function rotate(index) {
+
+    if (people.length === 0) {
+
+        return;
+
+    }
+
+
+    /*
+       Remove player from current position.
+    */
+
+    const person =
+        people.splice(index, 1)[0];
+
+
+    /*
+       Move player to bottom.
+    */
+
+    people.push(person);
+
+
+    /*
+       Increase chain.
+    */
+
+    chainCount++;
+
+
+    /*
+       Record rotation history.
+    */
+
+    history.unshift({
+
+        name: person,
+
+        chain: chainCount,
+
+        time:
+            new Date().toLocaleTimeString()
+
+    });
+
+
+    /*
+       Keep the last 100
+       rotations.
+    */
+
+    if (history.length > 100) {
+
+        history.pop();
+
+    }
+
+
+    render();
+
+}
+
+
+/* ==========================================
+   MANUAL +1
+========================================== */
+
+function addCount() {
+
+    chainCount++;
+
+    render();
+
+}
+
+
+/* ==========================================
+   RESET COUNTER
+========================================== */
+
+function resetCount() {
+
+    if (
+        !confirm(
+            "Reset the current chain counter to 0?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    chainCount = 0;
+
+
+    render();
+
+}
+
+
+/* ==========================================
+   DRAG START
+========================================== */
+
+function dragStart(e) {
+
+    dragStartIndex =
+        Number(
+            this.dataset.index
+        );
+
+
+    this.classList.add(
+        "dragging"
+    );
+
+}
+
+
+/* ==========================================
+   DRAG OVER
+========================================== */
+
+function dragOver(e) {
+
+    e.preventDefault();
+
+}
+
+
+/* ==========================================
+   DROP
+========================================== */
+
+function drop(e) {
+
+    e.preventDefault();
+
+
+    const dropIndex =
+        Number(
+            this.dataset.index
+        );
+
+
+    if (
+        dragStartIndex === null ||
+        dragStartIndex === dropIndex
+    ) {
+
+        return;
+
+    }
+
+
+    const moved =
+        people.splice(
+            dragStartIndex,
+            1
+        )[0];
+
+
+    people.splice(
+        dropIndex,
+        0,
+        moved
+    );
+
+
+    dragStartIndex = null;
+
+
+    render();
+
+}
+
+
+/* ==========================================
+   COPY ROTATION
+========================================== */
+
+async function copyChat() {
+
+    if (people.length === 0) {
+
+        return;
+
+    }
+
+
+    let text =
+        "🔄 Torn War Rotation\n\n";
+
+
+    people.forEach(
+        (name, index) => {
+
+            let icon = "🔴";
+
+
+            if (index === 0) {
+
+                icon = "🟢";
+
+            }
+            else if (index < 3) {
+
+                icon = "🟡";
+
+            }
+
+
+            const expectedChain =
+                chainCount + index + 1;
+
+
+            text +=
+                `${icon} ${name} → Chain #${expectedChain}\n`;
+
+        }
+    );
+
+
+    try {
+
+        await navigator.clipboard
+            .writeText(text);
+
+
+        const btn =
+            document.querySelector(
+                ".copyBtn"
+            );
+
+
+        const original =
+            btn.innerText;
+
+
+        btn.innerText =
+            "✅ Copied!";
+
+
+        setTimeout(
+            function() {
+
+                btn.innerText =
+                    original;
+
+            },
+            1500
+        );
+
+
+    }
+    catch {
+
+        prompt(
+            "Copy the rotation:",
+            text
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   DISPLAY HISTORY
+========================================== */
+
+function renderHistory() {
+
+    const historyDiv =
+        document.getElementById(
+            "history"
+        );
+
+
+    historyDiv.innerHTML = "";
+
+
+    if (history.length === 0) {
+
+        historyDiv.innerHTML = `
+            <div class="empty">
+                No rotations yet.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    history.forEach(
+        function(item) {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "historyItem";
+
+
+            div.innerHTML =
+                `🔄 ${item.time} — 
+                <strong>${item.name}</strong>
+                → Chain #${item.chain}`;
+
+
+            historyDiv.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+
+/* ==========================================
+   ENTER KEY
+========================================== */
+
+document
+    .getElementById("nameInput")
+    .addEventListener(
+        "keydown",
+        function(e) {
+
+            if (e.key === "Enter") {
+
+                addMember();
+
+            }
+
+        }
+    );
+
+
+/* ==========================================
+   START APPLICATION
+========================================== */
+
+render();
+
+</script>
+
 </body>
 </html>
