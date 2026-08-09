@@ -676,26 +676,9 @@ function addMember() {
 
 function remove(index) {
 
-    const person =
-        people[index];
-
-
-    if (
-        !confirm(
-            `Remove ${person} from the rotation?`
-        )
-    ) {
-
-        return;
-
-    }
-
-
     people.splice(index, 1);
 
-
     render();
-
 }
 
 
@@ -786,22 +769,9 @@ function addCount() {
 
 function resetCount() {
 
-    if (
-        !confirm(
-            "Reset the current chain counter to 0?"
-        )
-    ) {
-
-        return;
-
-    }
-
-
     chainCount = 0;
 
-
     render();
-
 }
 
 
@@ -896,7 +866,7 @@ async function copyChat() {
 
 
     let text =
-        "🔄 Torn War Rotation\n\n";
+        "🔄 Current Rotation\n\n";
 
 
     people.forEach(
